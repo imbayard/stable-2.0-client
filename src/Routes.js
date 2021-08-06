@@ -3,6 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import NewCheckIn from "./containers/NewCheckIn";
 
 export default function Routes() {
@@ -11,12 +13,12 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route exact path="/login">
+      <UnauthenticatedRoute exact path="/login">
         <Login />
-      </Route>
-      <Route exact path="/checkin/new">
+      </UnauthenticatedRoute>
+      <AuthenticatedRoute exact path="/checkin/new">
         <NewCheckIn />
-      </Route>
+      </AuthenticatedRoute>
       <Route>
         <NotFound />
       </Route>

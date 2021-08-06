@@ -4,7 +4,7 @@ import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import { API } from "aws-amplify";
 import Table from 'react-bootstrap/Table';
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaTrophy } from "react-icons/fa";
 
 import "./Home.css";
 
@@ -40,6 +40,7 @@ export default function Home() {
   }
 
   function renderCheckInList(checkIns){
+    checkIns.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
     return (
       <>
           <Table striped bordered hover>
@@ -59,7 +60,7 @@ export default function Home() {
             <tbody>
               {checkIns.map(({ checkInId, mindBool, bodyBool, socialBool, mindfulBool, meTimeBool, lessOneBool, lessTwoBool, pushedSelfBool, dateCreated}) => (
                   <tr key={checkInId}>
-                    <td>{Date(dateCreated).toLocaleString("en-US", { timeZone: 'EST'})}</td>
+                    <td>{new Date(dateCreated).toLocaleString("en-US", { timeZone: 'EST'})}</td>
                     <td>{mindBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
                     <td>{bodyBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
                     <td>{socialBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
@@ -67,7 +68,7 @@ export default function Home() {
                     <td>{meTimeBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
                     <td>{lessOneBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
                     <td>{lessTwoBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{pushedSelfBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
+                    <td>{pushedSelfBool ? <FaTrophy/> : <FaTimesCircle />}</td>
                   </tr>
               ))}
             </tbody>
