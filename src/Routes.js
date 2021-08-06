@@ -6,6 +6,7 @@ import Login from "./containers/Login";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import NewCheckIn from "./containers/NewCheckIn";
+import Signup from "./containers/Signup";
 
 export default function Routes() {
   return (
@@ -19,6 +20,9 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/checkin/new">
         <NewCheckIn />
       </AuthenticatedRoute>
+      <UnauthenticatedRoute exact path="/signup">
+        <Signup />
+      </UnauthenticatedRoute>
       <Route>
         <NotFound />
       </Route>
