@@ -4,6 +4,8 @@ import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import { API } from "aws-amplify";
 import Table from 'react-bootstrap/Table';
+//import LoaderButton from "../components/LoaderButton";
+import Chart from "react-google-charts";
 import { FaCheckCircle, FaTimesCircle, FaTrophy } from "react-icons/fa";
 
 import "./Home.css";
@@ -13,6 +15,15 @@ export default function Home() {
   const [checkIns, setCheckIns] = useState([]);
   const {isAuthenticated} = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
+  const [mindAvg, setMindAvg] = useState(0.0);
+  const [bodyAvg, setBodyAvg] = useState(0);
+  const [socialAvg, setSocialAvg] = useState(0);
+  const [mindfulAvg, setMindfulAvg] = useState(0);
+  const [meTimeAvg, setMeTimeAvg] = useState(0);
+  const [lessOneAvg, setLessOneAvg] = useState(0);
+  const [lessTwoAvg, setLessTwoAvg] = useState(0);
+  const [pushedSelfAvg, setPushedSelfAvg] = useState(0);
+  //const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     async function onLoad() {
@@ -21,15 +32,21 @@ export default function Home() {
       }
 
       try {
-        const checkIns = await loadCheckIns();
-        setCheckIns(checkIns);
-        console.log(checkIns);
-        setIsLoading(false);
+        const result = await loadCheckIns();
+        setCheckIns(result.checkIns);
+        setMindAvg(result.averages.mind);
+        console.log(result.averages.mind);
+        setBodyAvg(result.averages.body);
+        setSocialAvg(result.averages.social);
+        setMindfulAvg(result.averages.mindful);
+        setMeTimeAvg(result.averages.meTime);
+        setLessOneAvg(result.averages.lessOne);
+        setLessTwoAvg(result.averages.lessTwo);
+        setPushedSelfAvg(result.averages.pushedSelf);
       } catch(e) {
         onError(e);
-        setIsLoading(false);
       }
-
+      setIsLoading(false);
     }
 
     onLoad();
@@ -39,8 +56,30 @@ export default function Home() {
     return API.get("stable-2", "/checkin/list");
   }
 
+  // function deleteCheckIn(id){
+  //   return API.del("stable-2", `/checkin/delete/${id}`);
+  // }
+
+  // async function promptDelete(checkInId){
+  //   const confirmed = window.confirm("Are you sure you want to delete this?");
+
+  //   if(!confirmed){return;}
+  //   else{
+  //     setIsDeleting(true);
+  //   }
+
+  //   try {
+  //     await deleteCheckIn(checkInId);
+  //     setIsDeleting(false);
+  //   } catch (e) {
+  //     onError(e);
+  //     setIsDeleting(false);
+  //   }
+
+  // }
+
   function renderCheckInList(checkIns){
-    checkIns.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
+    checkIns.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1);
     return (
       <>
           <Table striped bordered hover>
@@ -77,6 +116,31 @@ export default function Home() {
     );
   }
 
+  function renderChart() {
+    return(
+      <Chart
+        width={'500px'}
+        height={'300px'}
+        chartType="PieChart"
+        loader={<div>Loading Chart</div>}
+        data={[
+          ['Balance Area', 'Percentage of Days Engaged'],
+          ['Mind', mindAvg],
+          ['Body', bodyAvg],
+          ['Social', socialAvg],
+          ['Mindful', mindfulAvg],
+          ['Me Time', meTimeAvg],
+          ['Weed', lessOneAvg],
+          ['Poor Eating', lessTwoAvg],
+        ]}
+        options={{
+          title: 'My Balance Profile',
+        }}
+        rootProps={{ 'data-testid': '1' }}
+      />
+    );
+  }
+
   function renderLander() {
     return (
         <div className="lander">
@@ -91,6 +155,7 @@ export default function Home() {
       <div className='checkIns'>
         <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History</h2>
         <ListGroup>{!isLoading && renderCheckInList(checkIns)}</ListGroup>
+        <>{!isLoading && renderChart()}</>
       </div>
     )
   }
