@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
+import Alert from "react-bootstrap/Alert";
 import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import { API } from "aws-amplify";
@@ -35,7 +36,6 @@ export default function Home() {
         const result = await loadCheckIns();
         setCheckIns(result.checkIns);
         setMindAvg(result.averages.mind);
-        console.log(result.averages.mind);
         setBodyAvg(result.averages.body);
         setSocialAvg(result.averages.social);
         setMindfulAvg(result.averages.mindful);
@@ -118,6 +118,7 @@ export default function Home() {
 
   function renderChart() {
     return(
+      <>
       <Chart
         width={'500px'}
         height={'300px'}
@@ -138,6 +139,8 @@ export default function Home() {
         }}
         rootProps={{ 'data-testid': '1' }}
       />
+        <Alert key={"pushed"} variant='info'>You've pushed yourself on {pushedSelfAvg*100}% of recorded days.</Alert>
+      </>
     );
   }
 
