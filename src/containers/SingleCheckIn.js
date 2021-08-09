@@ -8,16 +8,19 @@ import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
 import { useParams, useHistory } from "react-router-dom";
 
 export default function SingleCheckIn() {
+  // This page will render a single checkIn and allow for deletion
+  // TODO: Add functionality to edit the checkIn
     
-    const [checkIn, setCheckIn] = useState([]);
+    const [checkIn, setCheckIn] = useState([]); // This is the checkIn that will be displayed
     const {isAuthenticated} = useAppContext();
     const [isLoading, setIsLoading] = useState(true);
-    const { id } = useParams();
+    const { id } = useParams(); // The id from the URI
     const history = useHistory();
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         function loadCheckIn(){
+          // The API call to get a single checkIn
           return API.get("stable-2", `/checkin/${id}`);
         }
         async function onLoad() {
@@ -26,6 +29,7 @@ export default function SingleCheckIn() {
           }
     
           try {
+            // Wait for the checkIn to load
             const result = await loadCheckIn();
             setCheckIn(result);
           } catch(e) {
@@ -38,6 +42,7 @@ export default function SingleCheckIn() {
     }, [isAuthenticated, id]);
 
     function deleteCheckIn(id){
+        // The API call to delete a checkIn based on its ID
         return API.del("stable-2", `/checkin/delete/${id}`);
     }
 
@@ -52,8 +57,7 @@ export default function SingleCheckIn() {
 
           try {
             await deleteCheckIn(id);
-            history.push("/");
-            setIsDeleting(false);
+            history.push("/"); // Force the user back to the homepage after deletion
           } catch (e) {
             onError(e);
             setIsDeleting(false);
@@ -115,6 +119,8 @@ export default function SingleCheckIn() {
 
     return (
         <div className="Home">
+          {/* The page is authenticated based on its route, so we only need to check if it's loading or not */}
+          {/* Once it finishes loading, we will render the checkIn */}
           {(!isLoading) ? renderCheckIn() : renderLander()}
         </div>
       );
