@@ -51,9 +51,6 @@ function App() {
               {isAuthenticated ? (
                 <>
                   <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                  <LinkContainer to="/checkin/new">
-                      <Nav.Link>Daily Check-In</Nav.Link>
-                  </LinkContainer>
                 </>
               ) : (
                 <>
