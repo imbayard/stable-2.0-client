@@ -5,9 +5,8 @@ import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import { API } from "aws-amplify";
 import Table from 'react-bootstrap/Table';
-//import LoaderButton from "../components/LoaderButton";
+import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
 import Chart from "react-google-charts";
-import { FaCheckCircle, FaTimesCircle, FaTrophy } from "react-icons/fa";
 
 import "./Home.css";
 
@@ -24,7 +23,7 @@ export default function Home() {
   const [lessOneAvg, setLessOneAvg] = useState(0);
   const [lessTwoAvg, setLessTwoAvg] = useState(0);
   const [pushedSelfAvg, setPushedSelfAvg] = useState(0);
-  //const [isDeleting, setIsDeleting] = useState(false);
+  
 
   useEffect(() => {
     async function onLoad() {
@@ -56,28 +55,6 @@ export default function Home() {
     return API.get("stable-2", "/checkin/list");
   }
 
-  // function deleteCheckIn(id){
-  //   return API.del("stable-2", `/checkin/delete/${id}`);
-  // }
-
-  // async function promptDelete(checkInId){
-  //   const confirmed = window.confirm("Are you sure you want to delete this?");
-
-  //   if(!confirmed){return;}
-  //   else{
-  //     setIsDeleting(true);
-  //   }
-
-  //   try {
-  //     await deleteCheckIn(checkInId);
-  //     setIsDeleting(false);
-  //   } catch (e) {
-  //     onError(e);
-  //     setIsDeleting(false);
-  //   }
-
-  // }
-
   function renderCheckInList(checkIns){
     checkIns.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1);
     return (
@@ -99,21 +76,33 @@ export default function Home() {
             <tbody>
               {checkIns.map(({ checkInId, mindBool, bodyBool, socialBool, mindfulBool, meTimeBool, lessOneBool, lessTwoBool, pushedSelfBool, dateCreated}) => (
                   <tr key={checkInId}>
-                    <td>{new Date(dateCreated).toLocaleString("en-US", { timeZone: 'EST'})}</td>
-                    <td>{mindBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{bodyBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{socialBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{mindfulBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{meTimeBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{lessOneBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{lessTwoBool ? <FaCheckCircle/> : <FaTimesCircle />}</td>
-                    <td>{pushedSelfBool ? <FaTrophy/> : <FaTimesCircle />}</td>
+                    <td><a href={`/checkin/${checkInId}`}>{new Date(dateCreated).toLocaleString("en-US", { timeZone: 'EST'})}</a></td>
+                    <td>{mindBool ? CheckMark() : XMark()}</td>
+                    <td>{bodyBool ? CheckMark() : XMark()}</td>
+                    <td>{socialBool ? CheckMark() : XMark()}</td>
+                    <td>{mindfulBool ? CheckMark() : XMark()}</td>
+                    <td>{meTimeBool ? CheckMark() : XMark()}</td>
+                    <td>{lessOneBool ? CheckMark() : XMark()}</td>
+                    <td>{lessTwoBool ? CheckMark() : XMark()}</td>
+                    <td>{pushedSelfBool ? TrophySymbol() : "-"}</td>
                   </tr>
               ))}
             </tbody>
           </Table>
       </>
     );
+  }
+
+  function renderAlert() {
+    if (checkIns.length >= 5){
+      return (<Alert key={"pushed"} variant='info'>You've pushed yourself on {pushedSelfAvg*100}% of recorded days.</Alert>);
+    } else if (checkIns.length >=3) {
+      return (<Alert variant="info">Great work! Keep recording your daily check-ins.</Alert>);
+    } else if (checkIns.length === 2) {
+      return (<Alert variant="info">Nice! Remember, the more check-ins you record, the more aware you'll be of your tendencies.</Alert>);
+    } else if (checkIns.length === 1) { 
+      return (<Alert variant="info">Congrats on starting down this path! The more days where you record a check-in, the more aware you'll be of your tendencies. From there, you can make any adjustments you see fit.</Alert>);
+    }
   }
 
   function renderChart() {
@@ -139,7 +128,7 @@ export default function Home() {
         }}
         rootProps={{ 'data-testid': '1' }}
       />
-        <Alert key={"pushed"} variant='info'>You've pushed yourself on {pushedSelfAvg*100}% of recorded days.</Alert>
+        {renderAlert()}
       </>
     );
   }
@@ -154,13 +143,24 @@ export default function Home() {
   }
 
   function renderCheckIns() {
-    return (
-      <div className='checkIns'>
-        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History</h2>
-        <ListGroup>{!isLoading && renderCheckInList(checkIns)}</ListGroup>
-        <>{!isLoading && renderChart()}</>
-      </div>
-    )
+    if(checkIns.length > 0){
+      return (
+        <div className='checkIns'>
+          <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History</h2>
+          <ListGroup>{!isLoading && renderCheckInList(checkIns)}</ListGroup>
+          <>{!isLoading && renderChart()}</>
+        </div>
+      )
+    } else {
+      return (
+        <div className='checkIns'>
+          <br/>
+          <h2>Looks like you haven't used this before.</h2>
+          <h5>Click 'Daily Check-In' above in order to see your balance profile.</h5>
+        </div>
+      )
+    }
+
   }
 
   return (
