@@ -79,7 +79,7 @@ export default function SingleCheckIn() {
                     <th>Me Time</th>
                     <th>Weed</th>
                     <th>Poor Eating</th>
-                    <th>Pushed Self</th>
+                    <th>Trophy</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -96,6 +96,7 @@ export default function SingleCheckIn() {
                       </tr>
                 </tbody>
               </Table>
+              <p><strong>Notes: </strong>{checkIn.notes}</p>
               <LoaderButton 
                 variant="danger"
                 onClick={promptDelete}

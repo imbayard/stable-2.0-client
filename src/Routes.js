@@ -5,7 +5,7 @@ import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-import NewCheckIn from "./containers/NewCheckIn";
+import CheckInLanding from "./containers/CheckInLanding";
 import Signup from "./containers/Signup";
 import SingleCheckIn from "./containers/SingleCheckIn";
 
@@ -19,7 +19,7 @@ export default function Routes() {
         <Login />
       </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/checkin/new">
-        <NewCheckIn />
+        <CheckInLanding />
       </AuthenticatedRoute>
       <UnauthenticatedRoute exact path="/signup">
         <Signup />
