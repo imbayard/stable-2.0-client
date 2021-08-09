@@ -90,7 +90,7 @@ export default function Home() {
                 <th>Me Time</th>
                 <th>Weed</th>
                 <th>Poor Eating</th>
-                <th>Pushed Self</th>
+                <th>Trophy</th>
               </tr>
             </thead>
             <tbody>
@@ -116,7 +116,7 @@ export default function Home() {
   function renderAlert() {
     // The logic for generating the alert messages
     if (checkIns.length >= 5){
-      return (<Alert key={"pushed"} variant='info'>You've pushed yourself on {pushedSelfAvg*100}% of recorded days.</Alert>);
+      return (<Alert key={"pushed"} variant='info'>You've gotten trophies on {pushedSelfAvg*100}% of recorded days.</Alert>);
     } else if (checkIns.length >=3) {
       return (<Alert variant="info">Great work! Keep recording your daily check-ins.</Alert>);
     } else if (checkIns.length === 2) {
