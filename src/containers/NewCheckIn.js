@@ -8,6 +8,7 @@ import { API } from "aws-amplify";
 import { onError } from "../libs/errorLib";
 
 export default function NewNote() {
+  // This page lets you begin the check-in journey
   const history = useHistory();
   const [mind, setMind] = useState(false);
   const [body, setBody] = useState(false);
