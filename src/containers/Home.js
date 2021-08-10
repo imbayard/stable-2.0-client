@@ -168,6 +168,17 @@ export default function Home() {
     history.push("/checkin/new");
   }
 
+  function renderCheckInButtonSingle() {
+    return(
+      <>
+        <Button variant='success' onClick={newCheckIn}>
+          Record Daily Check-In
+        </Button>
+        <Alert variant="info">Remember to record your check-in at the end of the day today!</Alert>
+      </>
+    )
+  }
+
   function renderCheckInButton() {
     // Renders a disabled button if a check-in has been recorded today, else it is clickable
     const mostRecentCheckInIndex = checkIns.length - 1;
@@ -207,7 +218,7 @@ export default function Home() {
       // Return a message to prompt the user to submit their first checkIn if they haven't made any submissions yet
       return (
         <div className='checkIns'>
-          {renderCheckInButton()}
+          {renderCheckInButtonSingle()}
           <br/>
           <h2>Looks like you haven't used this before.</h2>
           <h5>Click 'Daily Check-In' above in order to see your balance profile.</h5>

@@ -107,6 +107,13 @@ export default function Signup() {
           />
         </Form.Group>
         <Form.Group controlId="password" size="lg">
+          <p>Password Must:</p>
+          <ul>
+            <li>Be longer than 8 characters</li>
+            <li>Contain a symbol (!, #, *, etc)</li>
+            <li>Contain a capital letter</li>
+            <li>Contain a number</li>
+          </ul>
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
