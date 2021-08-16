@@ -174,7 +174,7 @@ export default function NewCheckIn() {
                                 checked={lessOne}
                                 variant="success"
                                 onChange={e => setLessOne(e.currentTarget.checked)}
-                            >Weed
+                            >Gaming
                             </ToggleButton>
                             <ToggleButton 
                                 type="checkbox"

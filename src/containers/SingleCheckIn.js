@@ -77,7 +77,7 @@ export default function SingleCheckIn() {
                     <th>Social</th>
                     <th>Mindful</th>
                     <th>Me Time</th>
-                    <th>Weed</th>
+                    <th>Gaming</th>
                     <th>Poor Eating</th>
                     <th>Trophy</th>
                   </tr>

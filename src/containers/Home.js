@@ -88,7 +88,7 @@ export default function Home() {
                 <th>Social</th>
                 <th>Mindful</th>
                 <th>Me Time</th>
-                <th>Weed</th>
+                <th>Gaming</th>
                 <th>Poor Eating</th>
                 <th>Trophy</th>
               </tr>
@@ -142,7 +142,7 @@ export default function Home() {
           ['Social', socialAvg],
           ['Mindful', mindfulAvg],
           ['Me Time', meTimeAvg],
-          ['Weed', lessOneAvg],
+          ['Gaming', lessOneAvg],
           ['Poor Eating', lessTwoAvg],
         ]}
         options={{
