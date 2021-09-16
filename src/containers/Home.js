@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
 import Chart from "react-google-charts";
+import Coach from "../components/Coach";
 
 import "./Home.css";
 
@@ -29,6 +30,7 @@ export default function Home() {
   const [meTimeAvg, setMeTimeAvg] = useState(0);
   const [lessOneAvg, setLessOneAvg] = useState(0);
   const [lessTwoAvg, setLessTwoAvg] = useState(0);
+  const [flags, setFlags] = useState({})
   // This is used for the alert message after 5 checkIns have been submitted
   const [pushedSelfAvg, setPushedSelfAvg] = useState(0);
   
@@ -51,6 +53,7 @@ export default function Home() {
         setLessOneAvg(result.averages.lessOne);
         setLessTwoAvg(result.averages.lessTwo);
         setPushedSelfAvg(result.averages.pushedSelf);
+        setFlags(result.flags);
       } catch(e) {
         onError(e);
       }
@@ -203,16 +206,29 @@ export default function Home() {
     }
   }
 
+  function renderCoach() {
+    return(
+      <Coach 
+        flags={flags}
+      />
+    )
+  }
+
   function renderCheckIns() {
     if(checkIns.length > 0){
       // Return the list of checkIns if there are at least 1
       return (
         <div className='checkIns'>
+          {renderCoach()}
           {renderCheckInButton()}
           <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History</h2>
           <ListGroup>{!isLoading && renderCheckInList(checkIns)}</ListGroup>
           <>{!isLoading && renderChart()}</>
         </div>
+      )
+    } else if (isLoading){
+      return (
+        <h2>Loading...</h2>
       )
     } else {
       // Return a message to prompt the user to submit their first checkIn if they haven't made any submissions yet

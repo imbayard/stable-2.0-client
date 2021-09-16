@@ -1,0 +1,10 @@
+.coach-sym-wrapper {
+    display: grid;
+    grid-template-columns: 10% 90%;
+}
+
+.coach-wrapper {
+    border: 1px solid;
+    margin: auto;
+    padding: 5px;
+}
