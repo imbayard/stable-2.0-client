@@ -1,7 +1,6 @@
 import React from "react";
 import { CoachSymbol } from "./Icons";
 import "./Coach.css";
-
 export default function Coach({
     flags,
     ...props
@@ -10,6 +9,10 @@ export default function Coach({
         if(!flags.flagHasRecentCheckIn){
             return(
                 <p className='coach-words'>For me to work properly, you'll need to record a daily check-in more frequently. <a href="https://tinyhabits.com/start-tiny/" target="_blank" rel="noreferrer">Here's some tips for helping you set up this small, daily habit.</a></p>
+            )
+        } else if (flags.flagLackingInCategory !== "nothing"){
+            return (
+                <p className='coach-words'>Looks like you've been slacking in the {flags.flagLackingInCategory} category recently. Try to incorporate {flags.flagLackingInCategory} in your day today!</p>
             )
         } else {
             return (
