@@ -113,7 +113,7 @@ export default function SingleCheckIn() {
             <div className="lander">
               <h1>Stable</h1>
               <p className="text-muted">Find Your Balance</p>
-              <p>Loading...</p>
+              <p>Loading Check-In...</p>
             </div>
         );
     }

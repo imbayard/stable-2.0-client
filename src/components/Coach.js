@@ -9,11 +9,11 @@ export default function Coach({
     function getTip(){
         if(!flags.flagHasRecentCheckIn){
             return(
-                <p>Hey, for me to help you become the best version of yourself, you'll need to check-in more frequently! <a href="https://tinyhabits.com/start-tiny/" target="_blank" rel="noreferrer">Here's some tips for helping you set up this small, daily habit.</a></p>
+                <p className='coach-words'>For me to work properly, you'll need to record a daily check-in more frequently. <a href="https://tinyhabits.com/start-tiny/" target="_blank" rel="noreferrer">Here's some tips for helping you set up this small, daily habit.</a></p>
             )
         } else {
             return (
-                <p>Lookin good, good lookin!</p>
+                <p className='coach-words'>Lookin good, good lookin!</p>
             )
         }
     }

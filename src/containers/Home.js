@@ -119,13 +119,13 @@ export default function Home() {
   function renderAlert() {
     // The logic for generating the alert messages
     if (checkIns.length >= 5){
-      return (<Alert key={"pushed"} variant='info'>You've gotten trophies on {pushedSelfAvg*100}% of recorded days.</Alert>);
+      return (<p className='custom-alert'>You've gotten trophies on {Math.round(pushedSelfAvg*100*100) / 100}% of recorded days.</p>);
     } else if (checkIns.length >=3) {
-      return (<Alert variant="info">Great work! Keep recording your daily check-ins.</Alert>);
+      return (<p className='custom-alert'>Great work! Keep recording your daily check-ins.</p>);
     } else if (checkIns.length === 2) {
-      return (<Alert variant="info">Nice! Remember, the more check-ins you record, the more aware you'll be of your tendencies.</Alert>);
+      return (<p className='custom-alert'>Nice! Remember, the more check-ins you record, the more aware you'll be of your tendencies.</p>);
     } else if (checkIns.length === 1) { 
-      return (<Alert variant="info">Congrats on starting down this path! Remember, more check-ins means more awareness of your tendencies.</Alert>);
+      return (<p className='custom-alert'>Congrats on starting down this path! Remember, more check-ins means more awareness of your tendencies.</p>);
     }
   }
 
@@ -172,36 +172,38 @@ export default function Home() {
   }
 
   function renderCheckInButtonSingle() {
+    // Had to be created due to the case when there are 0 checkIns
     return(
-      <>
+      <span className='check-in-row'>
         <Button variant='success' onClick={newCheckIn}>
           Record Daily Check-In
         </Button>
-        <Alert variant="info">Remember to record your check-in at the end of the day today!</Alert>
-      </>
+        <p className='custom-alert'>Remember to record your check-in at the end of the day today!</p>
+      </span>
     )
   }
 
   function renderCheckInButton() {
     // Renders a disabled button if a check-in has been recorded today, else it is clickable
     const mostRecentCheckInIndex = checkIns.length - 1;
+    // Since the below line is null in case of 0 checkIns, renderCheckInButtonSingle had to be created
     if (formatDate(checkIns[mostRecentCheckInIndex].dateCreated) === formatDate(Date.now())){
       return(
-        <>
+        <span className='check-in-row'>
           <Button variant='success-outline' disabled>
             Record Daily Check-In
           </Button>
-          <Alert variant="info">Good work! You've already recorded your check-in today. Click the date to edit / delete it.</Alert>
-        </>
+          <p className='custom-alert'>Good work! You've already recorded your check-in today. Click the date to edit / delete it.</p>
+        </span>
       )
     } else {
       return(
-        <>
-          <Button variant='success' onClick={newCheckIn}>
+        <span className='check-in-row'>
+          <Button variant='success' size='sm' onClick={newCheckIn}>
             Record Daily Check-In
           </Button>
-          <Alert variant="info">Remember to record your check-in at the end of the day today!</Alert>
-        </>
+          <p className='custom-alert'>Remember to record your check-in at the end of the day today!</p>
+        </span>
       )
     }
   }
