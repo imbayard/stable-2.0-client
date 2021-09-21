@@ -1,15 +1,29 @@
 .coach-sym-wrapper {
     display: grid;
     grid-template-columns: 10% 90%;
-    padding: 5px 5px 5px 30px;
+    padding: 5px 5px 5px 15px;
+    background-color: rgb(225, 253, 220);
+    border-radius: 15px;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 .coach-wrapper {
-    border: 1px dashed;
+    border-radius: 8px;
     margin: auto;
     padding: 5px;
+    background-color: white;
 }
 
 .coach-words {
     font-size: 20px;
+    font-weight: 800;
+}
+
+.coach-sym {
+    border: 1px solid black;
+    margin: auto;
+    padding: 5px;
+    background-color: white;
+    border-radius: 15px;
 }

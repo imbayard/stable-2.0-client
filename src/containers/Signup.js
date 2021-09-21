@@ -60,7 +60,8 @@ export default function Signup() {
       await Auth.signIn(fields.email, fields.password);
   
       userHasAuthenticated(true);
-      history.push("/");
+      // Change this to /welcome
+      history.push("/welcome");
     } catch (e) {
       onError(e);
       setIsLoading(false);

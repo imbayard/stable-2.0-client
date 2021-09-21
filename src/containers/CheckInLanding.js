@@ -19,14 +19,14 @@ export default function NewCheckIn() {
     const [social, setSocial] = useState(false);
     const [mindful, setMindful] = useState(false);
     const [meTime, setMeTime] = useState(false);
-    const [lessOne, setLessOne] = useState(false);
-    const [lessTwo, setLessTwo] = useState(false);
+    // const [lessOne, setLessOne] = useState(false);
+    // const [lessTwo, setLessTwo] = useState(false);
     const [pushedSelf, setPushedSelf] = useState(false);
     const [notes, setNotes] = useState("");
     const [excitement, setExcitement] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [pageCount, setPageCount] = useState(0); // Ranges 0 - 9 (10 pages)
+    const [pageCount, setPageCount] = useState(0); // Ranges 0 - 8 (9 pages)
 
     const handleGetStartedClick = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
@@ -38,7 +38,7 @@ export default function NewCheckIn() {
 
     function handleExcitement(e) {
         setExcitement(e);
-        setPageCount(9);
+        setPageCount(8);
     }
 
     function renderPage(){
@@ -163,29 +163,29 @@ export default function NewCheckIn() {
                         </ButtonGroup>
                     </>
                 )
+            // case 6: 
+            //     return(
+            //         <>
+            //             <h4>Did you engage with either bad habit today?</h4>
+            //             <br />
+            //             <ButtonGroup toggle className="mb-2">
+            //                 <ToggleButton
+            //                     type="checkbox"
+            //                     checked={lessOne}
+            //                     variant="success"
+            //                     onChange={e => setLessOne(e.currentTarget.checked)}
+            //                 >Gaming
+            //                 </ToggleButton>
+            //                 <ToggleButton 
+            //                     type="checkbox"
+            //                     checked={lessTwo}
+            //                     variant="primary" 
+            //                     onChange={e => setLessTwo(e.currentTarget.checked)}
+            //                 >Poor Eating</ToggleButton>
+            //             </ButtonGroup>
+            //         </>
+            //     )
             case 6: 
-                return(
-                    <>
-                        <h4>Did you engage with either bad habit today?</h4>
-                        <br />
-                        <ButtonGroup toggle className="mb-2">
-                            <ToggleButton
-                                type="checkbox"
-                                checked={lessOne}
-                                variant="success"
-                                onChange={e => setLessOne(e.currentTarget.checked)}
-                            >Gaming
-                            </ToggleButton>
-                            <ToggleButton 
-                                type="checkbox"
-                                checked={lessTwo}
-                                variant="primary" 
-                                onChange={e => setLessTwo(e.currentTarget.checked)}
-                            >Poor Eating</ToggleButton>
-                        </ButtonGroup>
-                    </>
-                )
-            case 7: 
                 return(
                     <>
                         <h4>Did you do any of the following today?</h4>
@@ -214,7 +214,7 @@ export default function NewCheckIn() {
                         </ButtonGroup>
                     </>
                 )
-            case 8:
+            case 7:
                 return(
                     <>
                         <h4>Almost done! How excited are you for tomorrow?</h4>
@@ -224,7 +224,7 @@ export default function NewCheckIn() {
                         <Button variant="primary" onClick={() => handleExcitement(1)}><FaFrown /></Button>
                     </>
                 )
-            case 9:
+            case 8:
                 return(
                     <>
                         <h4>Care to reflect on today at all?</h4>
@@ -251,7 +251,7 @@ export default function NewCheckIn() {
     async function handleSubmit(){
         setIsLoading(true);
         try{
-            await submitCheckIn({happiness: happiness, mindBool: mind, bodyBool: body, socialBool: social, mindfulBool: mindful, meTimeBool: meTime, lessOneBool: lessOne, lessTwoBool: lessTwo, pushedSelfBool: pushedSelf, excitement: excitement, notes: notes});
+            await submitCheckIn({happiness: happiness, mindBool: mind, bodyBool: body, socialBool: social, mindfulBool: mindful, meTimeBool: meTime, pushedSelfBool: pushedSelf, excitement: excitement, notes: notes});
             history.push("/");
         } catch(e) {
             onError(e);
@@ -268,7 +268,7 @@ export default function NewCheckIn() {
     }
 
     function handleForwardClick(){
-        if(pageCount === 9){ // Start submission process if on last page
+        if(pageCount === 8){ // Start submission process if on last page
             handleSubmit();
         } else { // Otherwise, increase the page count
             setPageCount(pageCount + 1);

@@ -1,0 +1,21 @@
+.welcome {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    margin: auto;
+    text-align: center;
+}
+
+.welcome p {
+    background-color: #8aafb6;
+    color: white;
+    padding: 12px;
+    margin: auto;
+    margin-bottom: 1%;
+    margin-top: 1%;
+    text-align: left;
+}
+
+.header {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
