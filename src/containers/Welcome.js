@@ -11,7 +11,7 @@ export default function Welcome() {
             <h3 className='header'>Read the statements below to get started! (1min)</h3>
             <p>Thanks for trying out the app! I'll try to keep this part brief. <br /> The idea is to track habits by category. <br />Check out the example below.</p>
             <p>This is what your view will be like after completing many daily check-ins</p>
-            <img src={preCheckIn} style={{border:'1px solid'}} />
+            <img alt="The homepage before user checks in" src={preCheckIn} style={{border:'1px solid'}} />
             <p>Some things to note
                 <ul>
                     <li>See the coach, he notices patterns and alerts you to them. </li>
@@ -20,9 +20,9 @@ export default function Welcome() {
                 </ul>
             </p>
             <p>Next, the user will go through a daily check-in. Here's one question the coach will ask you (it corresponds to the trophy)</p>
-            <img src={checkIn} />
+            <img alt="The trophy part of the daily check-in" src={checkIn} />
             <p>After submitting their check-in (takes less than three minutes), it takes us back to the home page</p>
-            <img src={afterCheckIn} style={{border:'1px solid'}} />
+            <img alt="The homepage after user checks in" src={afterCheckIn} style={{border:'1px solid'}} />
             <p>Some things to note
                 <ul>
                     <li>The coach notices a new pattern and commends the user</li>
