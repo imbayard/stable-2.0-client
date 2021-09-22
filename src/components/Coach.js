@@ -38,8 +38,8 @@ export default function Coach({
         <div className="coach-wrapper">
             <h2>Coach</h2>
             <span className="coach-sym-wrapper">
-                <div class='coach-sym'>{CoachSymbol()}</div>
-                <div class='coach-tip'>{getTip()}</div>
+                <div className='coach-sym'>{CoachSymbol()}</div>
+                <div className='coach-tip'>{getTip()}</div>
             </span>
         </div>
         // <div>

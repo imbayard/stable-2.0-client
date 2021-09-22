@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
 import Chart from "react-google-charts";
 import Coach from "../components/Coach";
+import HomeCheckInForm from "../components/HomeCheckInForm";
 
 import "./Home.css";
 
@@ -29,7 +30,8 @@ export default function Home() {
   const [meTimeAvg, setMeTimeAvg] = useState(0);
   const [lessOneAvg, setLessOneAvg] = useState(0);
   const [lessTwoAvg, setLessTwoAvg] = useState(0);
-  const [flags, setFlags] = useState({})
+  const [flags, setFlags] = useState({});
+  const [dates, setDates] = useState([]);
   // This is used for the alert message after 5 checkIns have been submitted
   const [pushedSelfAvg, setPushedSelfAvg] = useState(0);
   
@@ -43,6 +45,7 @@ export default function Home() {
       try {
         // Wait for the checkIns to load, then populate the state
         const result = await loadCheckIns();
+        await getDates(result.checkIns);
         setCheckIns(result.checkIns);
         setMindAvg(result.averages.mind);
         setBodyAvg(result.averages.body);
@@ -58,7 +61,13 @@ export default function Home() {
       }
       setIsLoading(false);
     }
-
+    function getDates(checks){
+      let addDates = [];
+      for(let i = 0; i < checks.length; i++){
+        addDates.push(formatDate(checks[i].dateCreated));
+      }
+      setDates(addDates);
+    }
     onLoad();
   }, [isAuthenticated]);
 
@@ -111,6 +120,9 @@ export default function Home() {
               ))}
             </tbody>
           </Table>
+          <HomeCheckInForm 
+            dateList={dates}
+          />
       </>
     );
   }
