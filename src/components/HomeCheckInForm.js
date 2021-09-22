@@ -210,10 +210,7 @@ export default function HomeCheckInForm({
     } else {
         return(
             <div>
-                <span className='dayForm'>
-                    <p>Quick Add</p>
-                    <Button variant='success' size='sm' onClick={() => setIsOpen(true)}>+</Button>
-                </span>
+                    <Button variant='success' size='sm' onClick={() => setIsOpen(true)}>Open Quick-Add</Button>
             </div>
         )
     }
