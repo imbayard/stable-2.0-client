@@ -8,7 +8,7 @@ export default function Resources() {
     return(
         <div>
             <h1>Stable</h1>
-            <h4>Easy Resources</h4>
+            <h4>This page coming soon!</h4>
         </div>
     )
 

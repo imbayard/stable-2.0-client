@@ -1,0 +1,8 @@
+.dayForm {
+    display: grid;
+    grid-template-columns: 17.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 5%;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+}

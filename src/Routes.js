@@ -9,6 +9,7 @@ import CheckInLanding from "./containers/CheckInLanding";
 import Signup from "./containers/Signup";
 import SingleCheckIn from "./containers/SingleCheckIn";
 import Resources from "./containers/Resources";
+import Welcome from "./containers/Welcome";
 
 export default function Routes() {
   return (
@@ -30,6 +31,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/resources">
         <Resources />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/welcome">
+        <Welcome />
       </AuthenticatedRoute>
       <Route>
         <NotFound />

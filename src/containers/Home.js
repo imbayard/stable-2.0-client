@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
 import Chart from "react-google-charts";
 import Coach from "../components/Coach";
+import HomeCheckInForm from "../components/HomeCheckInForm";
 
 import "./Home.css";
 
@@ -29,7 +30,8 @@ export default function Home() {
   const [meTimeAvg, setMeTimeAvg] = useState(0);
   const [lessOneAvg, setLessOneAvg] = useState(0);
   const [lessTwoAvg, setLessTwoAvg] = useState(0);
-  const [flags, setFlags] = useState({})
+  const [flags, setFlags] = useState({});
+  const [dates, setDates] = useState([]);
   // This is used for the alert message after 5 checkIns have been submitted
   const [pushedSelfAvg, setPushedSelfAvg] = useState(0);
   
@@ -43,6 +45,7 @@ export default function Home() {
       try {
         // Wait for the checkIns to load, then populate the state
         const result = await loadCheckIns();
+        await getDates(result.checkIns);
         setCheckIns(result.checkIns);
         setMindAvg(result.averages.mind);
         setBodyAvg(result.averages.body);
@@ -58,7 +61,13 @@ export default function Home() {
       }
       setIsLoading(false);
     }
-
+    function getDates(checks){
+      let addDates = [];
+      for(let i = 0; i < checks.length; i++){
+        addDates.push(formatDate(checks[i].dateCreated));
+      }
+      setDates(addDates);
+    }
     onLoad();
   }, [isAuthenticated]);
 
@@ -90,8 +99,8 @@ export default function Home() {
                 <th>Social</th>
                 <th>Mindful</th>
                 <th>Me Time</th>
-                <th>Gaming</th>
-                <th>Poor Eating</th>
+                {/* <th>Gaming</th>
+                <th>Poor Eating</th> */}
                 <th>Trophy</th>
               </tr>
             </thead>
@@ -104,13 +113,16 @@ export default function Home() {
                     <td>{socialBool ? CheckMark() : XMark()}</td>
                     <td>{mindfulBool ? CheckMark() : XMark()}</td>
                     <td>{meTimeBool ? CheckMark() : XMark()}</td>
-                    <td>{lessOneBool ? CheckMark() : XMark()}</td>
-                    <td>{lessTwoBool ? CheckMark() : XMark()}</td>
+                    {/* <td>{lessOneBool ? CheckMark() : XMark()}</td>
+                    <td>{lessTwoBool ? CheckMark() : XMark()}</td> */}
                     <td>{pushedSelfBool ? TrophySymbol() : "-"}</td>
                   </tr>
               ))}
             </tbody>
           </Table>
+          <HomeCheckInForm 
+            dateList={dates}
+          />
       </>
     );
   }
@@ -119,12 +131,6 @@ export default function Home() {
     // The logic for generating the alert messages
     if (checkIns.length >= 5){
       return (<p className='custom-alert'>You've gotten trophies on {Math.round(pushedSelfAvg*100*100) / 100}% of recorded days.</p>);
-    } else if (checkIns.length >=3) {
-      return (<p className='custom-alert'>Great work! Keep recording your daily check-ins.</p>);
-    } else if (checkIns.length === 2) {
-      return (<p className='custom-alert'>Nice! Remember, the more check-ins you record, the more aware you'll be of your tendencies.</p>);
-    } else if (checkIns.length === 1) { 
-      return (<p className='custom-alert'>Congrats on starting down this path! Remember, more check-ins means more awareness of your tendencies.</p>);
     }
   }
 
@@ -211,6 +217,7 @@ export default function Home() {
     return(
       <Coach 
         flags={flags}
+        length={checkIns.length}
       />
     )
   }
@@ -238,7 +245,8 @@ export default function Home() {
           {renderCheckInButtonSingle()}
           <br/>
           <h2>Looks like you haven't used this before.</h2>
-          <h5>Click 'Daily Check-In' above in order to see your balance profile.</h5>
+          <br/>
+          <h5>Click 'Record Daily Check-In' at the end of the day today to log your first check-in and get started.</h5>
         </div>
       )
     }

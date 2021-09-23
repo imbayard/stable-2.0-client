@@ -69,7 +69,9 @@ function App() {
           </Navbar.Collapse>
         </Navbar>
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
-          <Routes />
+          <div className='app'>
+            <Routes />
+          </div>
         </AppContext.Provider>
       </div>
     )

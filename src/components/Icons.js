@@ -40,7 +40,7 @@ export function TrophySymbol(){
 export function CoachSymbol(){
     return(
         <IconContext.Provider
-            value={{ color: 'blue', size: '50px' }}
+            value={{ color: 'blue', size: '50px'}}
         >
             <>
                 <FaRobot />
