@@ -36,9 +36,19 @@ export default function HomeCheckInForm({
     }
 
     function checkDates(dateCreated){
+        const formattedDate = formatDate(dateCreated)
         for(let i = 0; i < dateList.length; i++){
-            if(dateList[i] === dateCreated){
-                return false
+            if(dateList[i] === formattedDate){
+                return {
+                    isValid: false,
+                    message: "There's already a check-in for this day."
+                }
+            }
+        }
+        if (dateCreated > Date.now()){
+            return {
+                isValid: false,
+                message: "You can't check-in for a day that hasn't happend yet!"
             }
         }
         return true;
@@ -67,9 +77,9 @@ export default function HomeCheckInForm({
             meTimeBool: meTime,
             pushedSelfBool: trophy,
         }
-        const isValid = checkDates(formatDate(date));
-        if(!isValid){
-            window.confirm("A Check-in with this date already exists");
+        const isValid = checkDates(date);
+        if(!isValid.isValid){
+            window.confirm(isValid.message);
             setIsOpen(false);
             setIsLoading(false);
             return;
