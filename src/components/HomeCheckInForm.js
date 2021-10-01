@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { onError } from "../libs/errorLib";
 import { useHistory } from "react-router-dom";
 import LoaderButton from "./LoaderButton";
@@ -98,7 +98,7 @@ export default function HomeCheckInForm({
     if(isOpen){
         return(
             <div>
-                <form>
+                <form id="override-bootstrap">
                     <span className="dayForm">
                         <label>
                             Date:
@@ -106,111 +106,87 @@ export default function HomeCheckInForm({
                         </label>
                         <label>
                             Mind:
-                            <ButtonGroup toggle className="mb-2">
-                                <ToggleButton
-                                    type="checkbox"
-                                    checked={mind}
-                                    variant="success"
-                                    onChange={() => setMind(true)}
+                            <ButtonGroup aria-label="Mind">
+                                <Button
+                                    variant={(mind) ? 'info' : 'secondary'}
+                                    onClick={() => setMind(true)}
                                 >Yes
-                                </ToggleButton>
-                                <ToggleButton 
-                                    type="checkbox"
-                                    checked={!mind}
-                                    variant="primary" 
-                                    onChange={() => setMind(false)}
-                                >No</ToggleButton>
+                                </Button>
+                                <Button
+                                    variant={(mind === false) ? 'info' : 'secondary'} 
+                                    onClick={() => setMind(false)}
+                                >No</Button>
                             </ButtonGroup>
                         </label>
                         <label>
                             Body:
-                                <ButtonGroup toggle className="mb-2">
-                                    <ToggleButton
-                                        type="checkbox"
-                                        checked={body}
-                                        variant="success"
-                                        onChange={() => setBody(true)}
+                                <ButtonGroup aria-label="Body">
+                                    <Button
+                                        variant={(body) ? 'info' : 'secondary'}
+                                        onClick={() => setBody(true)}
                                     >Yes
-                                    </ToggleButton>
-                                    <ToggleButton 
-                                        type="checkbox"
-                                        checked={!body}
-                                        variant="primary" 
-                                        onChange={() => setBody(false)}
-                                    >No</ToggleButton>
+                                    </Button>
+                                    <Button
+                                        variant={(body === false) ? 'info' : 'secondary'} 
+                                        onClick={() => setBody(false)}
+                                    >No</Button>
                                 </ButtonGroup>
                         </label>
                         <label>
                             Social:
-                                <ButtonGroup toggle className="mb-2">
-                                    <ToggleButton
-                                        type="checkbox"
-                                        checked={social}
-                                        variant="success"
-                                        onChange={() => setSocial(true)}
+                                <ButtonGroup aria-label="Social">
+                                    <Button
+                                        variant={(social) ? 'info' : 'secondary'}
+                                        onClick={() => setSocial(true)}
                                     >Yes
-                                    </ToggleButton>
-                                    <ToggleButton 
-                                        type="checkbox"
-                                        checked={!social}
-                                        variant="primary" 
-                                        onChange={() => setSocial(false)}
-                                    >No</ToggleButton>
+                                    </Button>
+                                    <Button
+                                        variant={(social === false) ? 'info' : 'secondary'} 
+                                        onClick={() => setSocial(false)}
+                                    >No</Button>
                                 </ButtonGroup>
                         </label>
                         <label>
                             Mindful:
-                                <ButtonGroup toggle className="mb-2">
-                                    <ToggleButton
-                                        type="checkbox"
-                                        checked={mindful}
-                                        variant="success"
-                                        onChange={() => setMindful(true)}
+                                <ButtonGroup aria-label="Mindful">
+                                    <Button
+                                        variant={(mindful) ? 'info' : 'secondary'}
+                                        onClick={() => setMindful(true)}
                                     >Yes
-                                    </ToggleButton>
-                                    <ToggleButton 
-                                        type="checkbox"
-                                        checked={!mindful}
-                                        variant="primary" 
-                                        onChange={() => setMindful(false)}
-                                    >No</ToggleButton>
+                                    </Button>
+                                    <Button
+                                        variant={(mindful === false) ? 'info' : 'secondary'} 
+                                        onClick={() => setMindful(false)}
+                                    >No</Button>
                                 </ButtonGroup>
                         </label>
                         <label>
                             Me Time:
-                            <ButtonGroup toggle className="mb-2">
-                                <ToggleButton
-                                    type="checkbox"
-                                    checked={meTime}
-                                    variant="success"
-                                    onChange={() => setMeTime(true)}
+                            <ButtonGroup aria-label="MeTime">
+                                <Button
+                                    variant={(meTime) ? 'info' : 'secondary'}
+                                    onClick={() => setMeTime(true)}
                                 >Yes
-                                </ToggleButton>
-                                <ToggleButton 
-                                    type="checkbox"
-                                    checked={!meTime}
-                                    variant="primary" 
-                                    onChange={() => setMeTime(false)}
-                                >No</ToggleButton>
+                                </Button>
+                                <Button
+                                    variant={(meTime === false) ? 'info' : 'secondary'} 
+                                    onClick={() => setMeTime(false)}
+                                >No</Button>
                             </ButtonGroup>
                         </label>
                         <label>
                             Trophy:
-                                <ButtonGroup toggle className="mb-2">
-                                    <ToggleButton
-                                        type="checkbox"
-                                        checked={trophy}
-                                        variant="success"
-                                        onChange={() => setTrophy(true)}
-                                    >Yes
-                                    </ToggleButton>
-                                    <ToggleButton 
-                                        type="checkbox"
-                                        checked={!trophy}
-                                        variant="primary" 
-                                        onChange={() => setTrophy(false)}
-                                    >No</ToggleButton>
-                                </ButtonGroup>
+                            <ButtonGroup aria-label="Trophy">
+                                <Button
+                                    variant={(trophy) ? 'info' : 'secondary'}
+                                    onClick={() => setTrophy(true)}
+                                >Yes
+                                </Button>
+                                <Button
+                                    variant={(trophy === false) ? 'info' : 'secondary'} 
+                                    onClick={() => setTrophy(false)}
+                                >No</Button>
+                            </ButtonGroup>
                         </label>
                         <LoaderButton isLoading={loading} variant='success' onClick={() => handleSubmit()}>+</LoaderButton>
                     </span>

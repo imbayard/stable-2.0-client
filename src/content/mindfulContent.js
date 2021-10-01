@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function mindfulResources() {
+export default function MindfulContent() {
     const content = {
         "activities": [
             {

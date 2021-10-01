@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function mindResources() {
+export default function MindContent() {
     const content = {
         "activities": [
             {

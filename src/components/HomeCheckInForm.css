@@ -1,8 +1,23 @@
-.dayForm {
-    display: grid;
-    grid-template-columns: 17.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 5%;
-    width: 100%;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 5px;
+@media screen and (min-width: 701px){
+    .dayForm {
+        display: grid;
+        grid-template-columns: 17.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 5%;
+        border: 1px solid black;
+        width: 100%;
+        border-radius: 10px;
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .dayForm {
+        display: grid;
+        grid-template-rows: auto auto auto auto auto auto auto auto;
+        width: 70%;
+        margin: auto;
+    }
+
+    #override-bootstrap button {
+        margin: auto;
+    }
 }

@@ -10,6 +10,7 @@ import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
 import Chart from "react-google-charts";
 import Coach from "../components/Coach";
 import HomeCheckInForm from "../components/HomeCheckInForm";
+import HomeContentPortal from "../components/HomeContentPortal";
 
 import "./Home.css";
 
@@ -139,7 +140,7 @@ export default function Home() {
     return(
       <>
       <Chart
-        width={'500px'}
+        width={'300px'}
         height={'300px'}
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
@@ -195,7 +196,7 @@ export default function Home() {
     if (formatDate(checkIns[mostRecentCheckInIndex].dateCreated) === formatDate(Date.now())){
       return(
         <span className='check-in-row'>
-          <Button variant='success-outline' disabled>
+          <Button variant='success-outline' size='sm' disabled>
             Record Daily Check-In
           </Button>
           <p className='custom-alert'>Good work! You've already recorded your check-in today. Click the date to edit / delete it.</p>
@@ -229,6 +230,7 @@ export default function Home() {
         <div className='checkIns'>
           {renderCoach()}
           {renderCheckInButton()}
+          <HomeContentPortal />
           <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History</h2>
           <ListGroup>{!isLoading && renderCheckInList(checkIns)}</ListGroup>
           <>{!isLoading && renderChart()}</>
