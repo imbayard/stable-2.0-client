@@ -16,7 +16,7 @@
 }
 
 .coach-words {
-    font-size: 20px;
+    font-size: 150%;
     font-weight: 800;
 }
 
@@ -26,4 +26,15 @@
     padding: 5px;
     background-color: white;
     border-radius: 15px;
+}
+
+@media screen and (max-width: 700px){
+    .coach-words {
+        font-size: 100%;
+    }
+
+    .coach-sym-wrapper {
+        display: grid;
+        grid-template-columns: 30% 70%;
+    }
 }
