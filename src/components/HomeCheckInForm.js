@@ -50,7 +50,10 @@ export default function HomeCheckInForm({
                 message: "You can't check-in for a day that hasn't happend yet!"
             }
         }
-        return true;
+        return {
+            isValid: true,
+            message: "nothing to see here ;)"
+        };
     }
 
     function submitCheckIn(checkInObject){
