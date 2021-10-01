@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { onError } from "../libs/errorLib";
 import { useHistory } from "react-router-dom";
 import LoaderButton from "./LoaderButton";
 import { API } from "aws-amplify";
 import DatePicker from "react-datepicker";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
 
 import "./HomeCheckInForm.css";

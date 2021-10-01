@@ -13,6 +13,7 @@ export default function HomeContentPortal() {
     async function onSubmit() {
         if(!length || !type){
             window.confirm("You must select the length and type.");
+            console.log(video);
         } else {
             const theVideo = await getVideo(length, type);
             setVideo(theVideo);
