@@ -5,6 +5,7 @@ import LoaderButton from "../components/LoaderButton";
 import { API } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { onError } from "../libs/errorLib";
+import ContentView from "../components/ContentView";
 
 export default function Resources() {
     // This is the resources page
@@ -79,6 +80,8 @@ export default function Resources() {
                 </label>
                 <LoaderButton variant="success" isLoading={loading} onClick={() => handleSubmit()}>Submit</LoaderButton>
             </span>
+            <h1>Content</h1>
+            <ContentView />
         </div>
     )
 
