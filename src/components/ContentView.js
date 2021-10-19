@@ -42,7 +42,7 @@ export default function ContentView() {
                 <h2>Unwatched</h2>
                 <ul>
                     {unwatched.map((video) => (
-                        <li>
+                        <li key={video.checkInId}>
                             <button onClick={() => watchVideo(video)}>{video.title}</button>
                         </li>
                     ))}
@@ -50,7 +50,7 @@ export default function ContentView() {
                 <h3>Passive</h3>
                 <ul>
                     {passive.map((video) => (
-                        <li>
+                        <li key={video.checkInId}>
                             Title: {video.title}
                             URL: {video.checkInId}
                         </li>
@@ -59,7 +59,7 @@ export default function ContentView() {
                 <h3>Practice</h3>
                 <ul>
                     {practice.map((video) => (
-                        <li>
+                        <li key={video.checkInId}>
                             Title: {video.title}
                             URL: {video.checkInId}
                         </li>

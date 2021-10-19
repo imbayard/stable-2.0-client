@@ -13,6 +13,23 @@ function getLengthVideo(videos, length){
     return videos[0];
 }
 
+export function updateVideo(video, watched, category, notes){
+    let note = notes
+    if(note === ""){
+        note = null;
+    }
+    let video_copy = {
+        "category": category,
+        "url": video.checkInId,
+        "userId": video.userId,
+        "watched": watched,
+        "length": video.length,
+        "title": video.title,
+        "notes": note
+    }
+    return video_copy;
+}
+
 export async function getVideo(length, category){
     let videos = await getVideos();
     if(category === 'unwatched'){

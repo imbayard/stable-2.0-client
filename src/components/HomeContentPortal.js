@@ -1,14 +1,22 @@
 import { React, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import LoaderButton from '../components/LoaderButton';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import "../containers/Home.css";
-import {getVideo} from "../content/AMVideos";
+import {getVideo, updateVideo} from "../content/AMVideos";
+import { onError } from "../libs/errorLib";
+import { API } from "aws-amplify";
 
 export default function HomeContentPortal() {
     const [isOpen, setIsOpen] = useState(false);
     const [length, setLength] = useState("");
     const [type, setType] = useState("");
     const [video, setVideo] = useState([]);
+    const [inReview, setInReview] = useState(false);
+    const [didWatch, setDidWatch] = useState(false);
+    const [category, setCategory] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [notes, setNotes] = useState("");
 
     async function onSubmit() {
         if(!length || !type){
@@ -20,6 +28,7 @@ export default function HomeContentPortal() {
             setVideo(theVideo);
             const win = window.open(theVideo.checkInId, "_blank");
             win.focus();
+            setInReview(true);
         }
     }
     
@@ -56,6 +65,54 @@ export default function HomeContentPortal() {
         }
     }
 
+    async function submitReview() {
+        if(category === ""){
+            onError("Need to choose a category");
+            return;
+        }
+        const updated_video = updateVideo(video, didWatch, category, notes);
+        setVideo(updated_video);
+        setLoading(true);
+        try{
+            await updateVideoHere(updated_video);
+            setLoading(false);
+            setInReview(false);
+        } catch(e) {
+            onError(e);
+            setLoading(false);
+        }
+    }
+
+    async function updateVideoHere(updated_video){
+        return API.post("stable-2", `/content/submit`, {body:updated_video});
+    }
+
+    function renderForm(){
+        return(
+            <span>
+                <label>
+                    <strong>Did you watch the video?</strong>
+                    <ButtonGroup aria-label="Watched?">
+                        <Button variant={(didWatch) ? 'success' : 'secondary'} onClick={() => setDidWatch(true)}>Yes</Button>
+                        <Button variant={(!didWatch) ? 'info' : 'secondary'} onClick={() => setDidWatch(false)}>No</Button>
+                    </ButtonGroup>
+                </label>
+                <label>
+                    <strong>Which category does it fit?</strong>
+                    <ButtonGroup aria-label="Category">
+                        <Button variant={(category === 'practice') ? 'info' : 'secondary'} onClick={() => setCategory("practice")}>Practice</Button>
+                        <Button variant={(category === 'passive') ? 'info': 'secondary'} onClick={() => setCategory("passive")}>Passive</Button>
+                    </ButtonGroup>
+                </label>
+                <label>
+                    <strong>Any notes?</strong>
+                    <input type='text' value={notes} onChange={event => setNotes(event.target.value)}/>
+                </label>
+                <LoaderButton isLoading={loading} variant="success" onClick={() => submitReview()}>Submit</LoaderButton>
+            </span>
+        )
+    }
+
     return(
         <div>
             <span className='check-in-row'>
@@ -64,7 +121,7 @@ export default function HomeContentPortal() {
             </Button>
             <p className='custom-alert'>If you have the time, watch a video or two.</p>
             </span>
-            {renderDrawer()}
+            {(inReview) ? renderForm() : renderDrawer()}
         </div>
       )
 }
