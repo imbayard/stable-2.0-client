@@ -33,8 +33,10 @@ export default function Home() {
   const [lessTwoAvg, setLessTwoAvg] = useState(0);
   const [flags, setFlags] = useState({});
   const [dates, setDates] = useState([]);
+  const [showFilter, setShowFilters] = useState(false);
   // This is used for the alert message after 5 checkIns have been submitted
   const [pushedSelfAvg, setPushedSelfAvg] = useState(0);
+  const [dr_filter, setDrFilter] = useState('week');
   
 
   useEffect(() => {
@@ -86,8 +88,71 @@ export default function Home() {
     return (month + "/" + day + "/" + year);
   }
 
+  function setFilterBy(range){
+    const today = new Date();
+    let month = today.getMonth() + 1;
+    let date = today.getDate();
+    let year = today.getFullYear();
+    const end = {
+      'month': month,
+      'date': date,
+      'year': year
+    };
+    if(range === 'month'){
+      month = month - 1;
+    } else if (range === 'week'){
+      date = date - 7;
+    } else if (range === 'year'){
+      year = year - 1;
+    } else if (range === 'alltime'){
+      year = 0;
+    }
+    return {
+        'start': {
+          'month': month,
+          'date': date,
+          'year': year
+        },
+        'end': end
+    }
+  }
+
   function renderCheckInList(checkIns){
     // Sort by date (most recent checkIns on the bottom)
+    checkIns = checkIns.filter(function (ci) {
+      const dateCreated = new Date(ci.dateCreated);
+      const month = dateCreated.getMonth() + 1;
+      const date = dateCreated.getDate();
+      const year = dateCreated.getFullYear();
+      const filter = setFilterBy(dr_filter);
+      if(year < filter.start.year || year > filter.end.year){
+        return false;
+      }
+      if(year > filter.start.year && year <= filter.end.year){
+        return true;
+      }
+      if(month < filter.end.month && month > filter.start.month){
+        return true;
+      }
+      if(month > filter.start.month && month === filter.end.month){
+        if(date <= filter.end.date){
+          return true;
+        }
+      }
+      if(month === filter.start.month && date >= filter.start.date){
+        return true;
+      }
+      if(month < filter.start.month || month > filter.end.month){
+        return false;
+      }
+      if(date < filter.end.date && date > filter.start.date){
+        return true;
+      }
+      if(date < filter.start.date || date > filter.end.date){
+        return false;
+      }
+      return true;
+    });
     checkIns.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1);
     return (
       <>
@@ -100,8 +165,6 @@ export default function Home() {
                 <th>Social</th>
                 <th>Mindful</th>
                 <th>Me Time</th>
-                {/* <th>Gaming</th>
-                <th>Poor Eating</th> */}
                 <th>Trophy</th>
               </tr>
             </thead>
@@ -109,13 +172,11 @@ export default function Home() {
               {checkIns.map(({ checkInId, mindBool, bodyBool, socialBool, mindfulBool, meTimeBool, lessOneBool, lessTwoBool, pushedSelfBool, dateCreated}) => (
                   <tr key={checkInId}>
                     <td><a href={`/checkin/${checkInId}`}>{formatDate(dateCreated)}</a></td>
-                    <td>{mindBool ? CheckMark() : XMark()}</td>
-                    <td>{bodyBool ? CheckMark() : XMark()}</td>
-                    <td>{socialBool ? CheckMark() : XMark()}</td>
-                    <td>{mindfulBool ? CheckMark() : XMark()}</td>
-                    <td>{meTimeBool ? CheckMark() : XMark()}</td>
-                    {/* <td>{lessOneBool ? CheckMark() : XMark()}</td>
-                    <td>{lessTwoBool ? CheckMark() : XMark()}</td> */}
+                    <td style={{backgroundColor: (mindAvg > 0.5) ? '#D1F2EB' : '#FAE5D3' }}>{mindBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (bodyAvg > 0.3) ? '#D1F2EB' : '#FAE5D3' }}>{bodyBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (socialAvg > 0.3) ? '#D1F2EB' : '#FAE5D3' }}>{socialBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (mindfulAvg > 0.5) ? '#D1F2EB' : '#FAE5D3' }}>{mindfulBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (meTimeAvg > 0.5) ? '#D1F2EB' : '#FAE5D3' }}>{meTimeBool ? CheckMark() : XMark()}</td>
                     <td>{pushedSelfBool ? TrophySymbol() : "-"}</td>
                   </tr>
               ))}
@@ -223,6 +284,24 @@ export default function Home() {
     )
   }
 
+  function showFilters(){
+    if(showFilter){
+      return(
+        <span className='filters'>
+          <h4>Currently showing the last {dr_filter} of entries.</h4>
+          <Button variant={(dr_filter === 'week') ? 'info' : 'secondary'} onClick={() => setDrFilter('week')}>1 Week</Button>
+          <Button variant={(dr_filter === 'month') ? 'info' : 'secondary'} onClick={() => setDrFilter('month')}>1 Month</Button>
+          <Button variant={(dr_filter === 'year') ? 'info' : 'secondary'} onClick={() => setDrFilter('year')}>1 Year</Button>
+          <Button variant={(dr_filter === 'alltime') ? 'info' : 'secondary'} onClick={() => setDrFilter('alltime')}>All Time</Button>
+        </span>
+      )
+    } else {
+      return(
+        <></>
+      )
+    }
+  }
+
   function renderCheckIns() {
     if(checkIns.length > 0){
       // Return the list of checkIns if there are at least 1
@@ -231,7 +310,8 @@ export default function Home() {
           {renderCoach()}
           {renderCheckInButton()}
           <HomeContentPortal />
-          <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History</h2>
+          <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History <Button onClick={() => setShowFilters(!showFilter)}>Filter</Button></h2>
+          {showFilters()}
           <ListGroup>{!isLoading && renderCheckInList(checkIns)}</ListGroup>
           <>{!isLoading && renderChart()}</>
         </div>

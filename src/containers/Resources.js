@@ -64,9 +64,9 @@ export default function Resources() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onSelect={() => setLength(5)}>5</Dropdown.Item>
-                            <Dropdown.Item onSelect={() => setLength(5)}>10</Dropdown.Item>
-                            <Dropdown.Item onSelect={() => setLength(5)}>30</Dropdown.Item>
-                            <Dropdown.Item onSelect={() => setLength(5)}>45</Dropdown.Item>
+                            <Dropdown.Item onSelect={() => setLength(10)}>10</Dropdown.Item>
+                            <Dropdown.Item onSelect={() => setLength(30)}>30</Dropdown.Item>
+                            <Dropdown.Item onSelect={() => setLength(45)}>45</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </label>

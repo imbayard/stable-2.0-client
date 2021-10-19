@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import "../containers/Home.css";
-import getVideo from "../content/AMVideos";
+import {getVideo} from "../content/AMVideos";
 
 export default function HomeContentPortal() {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,8 +16,9 @@ export default function HomeContentPortal() {
             console.log(video);
         } else {
             const theVideo = await getVideo(length, type);
+            console.log(theVideo);
             setVideo(theVideo);
-            const win = window.open(theVideo.url, "_blank");
+            const win = window.open(theVideo.checkInId, "_blank");
             win.focus();
         }
     }
@@ -42,9 +43,9 @@ export default function HomeContentPortal() {
                         <label>
                             <strong>Video Type</strong>{"   "}
                             <ButtonGroup aria-label="Video Type">
-                                <Button variant={(type === 'motivational') ? 'info' : 'secondary'} onClick={() => setType("motivational")}>Motivational</Button>
-                                <Button variant={(type === 'perspectives') ? 'info' : 'secondary'} onClick={() => setType("perspectives")}>Perspectives</Button>
-                                <Button variant={(type === 'selfwork') ? 'info' : 'secondary'} onClick={() => setType("selfwork")}>Self-Work</Button>
+                                <Button variant={(type === 'unwatched') ? 'info' : 'secondary'} onClick={() => setType("unwatched")}>Unwatched</Button>
+                                <Button variant={(type === 'practice') ? 'info' : 'secondary'} onClick={() => setType("practice")}>Practice</Button>
+                                <Button variant={(type === 'passive') ? 'info' : 'secondary'} onClick={() => setType("passive")}>Passive</Button>
                             </ButtonGroup>
                         </label>
                         <Button variant="success" onClick={() => onSubmit()}>Submit</Button>
