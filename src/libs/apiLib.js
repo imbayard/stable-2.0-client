@@ -47,3 +47,20 @@ Saves / updates a video on the database
 export function submitVideo(updated_video){
     return API.post("stable-2", `/content/submit`, {body:updated_video});
 }
+
+
+
+/**********************************
+PRIORITIES: POST REQUEST
+Saves / updates priorities on the database
+**********************************/
+export function setPriorities(priorities){
+    return API.post("stable-2", `/priorities/set`, {body:priorities});
+}
+/**********************************
+PRIORITIES: GET REQUEST
+Gets the list of priorities
+**********************************/
+export function getPriorities(){
+    return API.get("stable-2", `/priorities/get`);
+}

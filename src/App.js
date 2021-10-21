@@ -53,6 +53,9 @@ function App() {
                   <LinkContainer to="/resources">
                     <Nav.Link>Resources</Nav.Link>
                   </LinkContainer> 
+                  <LinkContainer to="/priorities">
+                    <Nav.Link>Priorities</Nav.Link>
+                  </LinkContainer>
                   <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                 </>
               ) : (
