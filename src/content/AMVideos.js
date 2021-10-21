@@ -1,8 +1,4 @@
-import { API } from "aws-amplify";
-
-function getVideos() {
-    return API.get("stable-2", "/content/all");
-}
+import {getAllContent} from "../libs/apiLib";
 
 function getLengthVideo(videos, length){
     for(let i = 0; i < videos.length; i++){
@@ -31,7 +27,7 @@ export function updateVideo(video, watched, category, notes){
 }
 
 export async function getVideo(length, category){
-    let videos = await getVideos();
+    let videos = await getAllContent();
     if(category === 'unwatched'){
         videos = videos.unwatched;
         return getLengthVideo(videos, length);

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { API } from "aws-amplify";
 import { onError } from "../libs/errorLib";
 import {FaMeh, FaGrin, FaFrown} from "react-icons/fa";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Form from "react-bootstrap/Form";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import LoaderButton from "../components/LoaderButton";
+
+import {submitCheckIn} from "../libs/apiLib";
 
 export default function NewCheckIn() {
 
@@ -19,8 +20,6 @@ export default function NewCheckIn() {
     const [social, setSocial] = useState(false);
     const [mindful, setMindful] = useState(false);
     const [meTime, setMeTime] = useState(false);
-    // const [lessOne, setLessOne] = useState(false);
-    // const [lessTwo, setLessTwo] = useState(false);
     const [pushedSelf, setPushedSelf] = useState(false);
     const [notes, setNotes] = useState("");
     const [excitement, setExcitement] = useState(1);
@@ -163,28 +162,6 @@ export default function NewCheckIn() {
                         </ButtonGroup>
                     </>
                 )
-            // case 6: 
-            //     return(
-            //         <>
-            //             <h4>Did you engage with either bad habit today?</h4>
-            //             <br />
-            //             <ButtonGroup toggle className="mb-2">
-            //                 <ToggleButton
-            //                     type="checkbox"
-            //                     checked={lessOne}
-            //                     variant="success"
-            //                     onChange={e => setLessOne(e.currentTarget.checked)}
-            //                 >Gaming
-            //                 </ToggleButton>
-            //                 <ToggleButton 
-            //                     type="checkbox"
-            //                     checked={lessTwo}
-            //                     variant="primary" 
-            //                     onChange={e => setLessTwo(e.currentTarget.checked)}
-            //                 >Poor Eating</ToggleButton>
-            //             </ButtonGroup>
-            //         </>
-            //     )
             case 6: 
                 return(
                     <>
@@ -240,12 +217,6 @@ export default function NewCheckIn() {
             default:
                 break;
         }
-    }
-
-    function submitCheckIn(checkInObject){
-        return API.post("stable-2", "/checkin/submit", {
-            body: checkInObject
-        });
     }
 
     async function handleSubmit(){

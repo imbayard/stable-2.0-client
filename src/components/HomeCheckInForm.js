@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { onError } from "../libs/errorLib";
 import { useHistory } from "react-router-dom";
 import LoaderButton from "./LoaderButton";
-import { API } from "aws-amplify";
 import DatePicker from "react-datepicker";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Button from "react-bootstrap/Button";
+
+import {submitCheckIn} from "../libs/apiLib";
 
 import "./HomeCheckInForm.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -55,12 +56,6 @@ export default function HomeCheckInForm({
             message: "nothing to see here ;)"
         };
     }
-
-    function submitCheckIn(checkInObject){
-        return API.post("stable-2", "/checkin/submit", {
-            body: checkInObject
-        });
-    } 
 
     async function handleSubmit() {
         setIsLoading(true);

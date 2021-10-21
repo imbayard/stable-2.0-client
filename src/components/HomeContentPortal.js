@@ -5,8 +5,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import "../containers/Home.css";
 import {getVideo, updateVideo} from "../content/AMVideos";
 import { onError } from "../libs/errorLib";
-import { API } from "aws-amplify";
 
+import {submitVideo} from "../libs/apiLib";
 export default function HomeContentPortal() {
     const [isOpen, setIsOpen] = useState(false);
     const [length, setLength] = useState("");
@@ -74,17 +74,13 @@ export default function HomeContentPortal() {
         setVideo(updated_video);
         setLoading(true);
         try{
-            await updateVideoHere(updated_video);
+            await submitVideo(updated_video);
             setLoading(false);
             setInReview(false);
         } catch(e) {
             onError(e);
             setLoading(false);
         }
-    }
-
-    async function updateVideoHere(updated_video){
-        return API.post("stable-2", `/content/submit`, {body:updated_video});
     }
 
     function renderForm(){

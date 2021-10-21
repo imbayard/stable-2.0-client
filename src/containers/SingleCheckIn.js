@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
-import { API } from "aws-amplify";
 import Table from 'react-bootstrap/Table';
 import LoaderButton from "../components/LoaderButton";
 import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
 import { useParams, useHistory } from "react-router-dom";
+
+import {deleteCheckIn, loadCheckIn} from "../libs/apiLib";
 
 export default function SingleCheckIn() {
   // This page will render a single checkIn and allow for deletion
@@ -19,18 +20,13 @@ export default function SingleCheckIn() {
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
-        function loadCheckIn(){
-          // The API call to get a single checkIn
-          return API.get("stable-2", `/checkin/${id}`);
-        }
         async function onLoad() {
           if (!isAuthenticated) {
             return;
           }
-    
           try {
             // Wait for the checkIn to load
-            const result = await loadCheckIn();
+            const result = await loadCheckIn(id);
             setCheckIn(result);
           } catch(e) {
             onError(e);
@@ -40,11 +36,6 @@ export default function SingleCheckIn() {
     
         onLoad();
     }, [isAuthenticated, id]);
-
-    function deleteCheckIn(id){
-        // The API call to delete a checkIn based on its ID
-        return API.del("stable-2", `/checkin/delete/${id}`);
-    }
 
     async function promptDelete(){
         const confirmed = window.confirm("Are you sure you want to delete this?");

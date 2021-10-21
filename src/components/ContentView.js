@@ -1,8 +1,9 @@
 import {React, useState, useEffect} from 'react';
-import { API } from "aws-amplify";
 import { onError } from "../libs/errorLib";
 import { useAppContext } from "../libs/contextLib";
 
+import { getAllContent } from "../libs/apiLib";
+ 
 export default function ContentView() {
     const {isAuthenticated} = useAppContext();
     const [unwatched, setUnwatched] = useState([]);
@@ -18,7 +19,7 @@ export default function ContentView() {
             }        
             try {
                 // Wait for the content to load, then populate the state
-                const result = await loadContent();
+                const result = await getAllContent();
                 setUnwatched(result.unwatched);
                 setPractice(result.watched.practice);
                 setPassive(result.watched.passive);
@@ -30,9 +31,6 @@ export default function ContentView() {
         onLoad();
     }, [isAuthenticated]);
 
-    function loadContent(){
-          return API.get("stable-2", "/content/all");
-    }
     function watchVideo(video){
         window.open(video.checkInId, "_blank");
     }
