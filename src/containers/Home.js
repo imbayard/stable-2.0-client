@@ -11,7 +11,7 @@ import Coach from "../components/Coach";
 import HomeCheckInForm from "../components/HomeCheckInForm";
 import HomeContentPortal from "../components/HomeContentPortal";
 
-import {loadCheckIns} from "../libs/apiLib";
+import {loadCheckIns, getPriorities} from "../libs/apiLib";
 import {formatDate, setFilterBy, filterCheckIns} from "../libs/dateLib";
 
 import "./Home.css";
@@ -31,6 +31,27 @@ export default function Home() {
   const [showFilter, setShowFilters] = useState(false);
   const [pushedSelfAvg, setPushedSelfAvg] = useState(0);
   const [dr_filter, setDrFilter] = useState('week');
+
+  const [showPriorities, setShowPriorities] = useState(false);
+  const [mindLow, setMindLow] = useState("");
+  const [mindHigh, setMindHigh] = useState("");
+  const [mindP, setMindP] = useState("");
+
+  const [bodyLow, setBodyLow] = useState("");
+  const [bodyHigh, setBodyHigh] = useState("");
+  const [bodyP, setBodyP] = useState("");
+
+  const [socialLow, setSocialLow] = useState("");
+  const [socialHigh, setSocialHigh] = useState("");
+  const [socialP, setSocialP] = useState("");
+
+  const [mindfulLow, setMindfulLow] = useState("");
+  const [mindfulHigh, setMindfulHigh] = useState("");
+  const [mindfulP, setMindfulP] = useState("");
+
+  const [meTimeLow, setMeTimeLow] = useState("");
+  const [meTimeHigh, setMeTimeHigh] = useState("");
+  const [meTimeP, setMeTimeP] = useState("");
   
 /********************************
 the useEffect method handles all loading requirements
@@ -47,6 +68,8 @@ the useEffect method handles all loading requirements
       try {
         // Wait for the checkIns to load, then populate the state
         const result = await loadCheckIns();
+        const priorities = await getPriorities();
+        collectPriorities(priorities);
         await getDates(result.checkIns);
         setCheckIns(result.checkIns);
         setMindAvg(result.averages.mind);
@@ -60,6 +83,31 @@ the useEffect method handles all loading requirements
         onError(e);
       }
       setIsLoading(false);
+    }
+    function collectPriorities(priorities){
+      for(let i = 0; i < priorities.length; i++){
+        if(priorities[i].category === 'mind'){
+          setMindP(priorities[i].goal / 7);
+          setMindLow(priorities[i].low / 7);
+          setMindHigh(priorities[i].high / 7);
+        } else if(priorities[i].category === 'body'){
+          setBodyP(priorities[i].goal / 7);
+          setBodyLow(priorities[i].low / 7);
+          setBodyHigh(priorities[i].high / 7);
+        } else if(priorities[i].category === 'social'){
+          setSocialP(priorities[i].goal / 7);
+          setSocialLow(priorities[i].low / 7);
+          setSocialHigh(priorities[i].high / 7);
+        } else if(priorities[i].category === 'mindful'){
+          setMindfulP(priorities[i].goal / 7);
+          setMindfulLow(priorities[i].low / 7);
+          setMindfulHigh(priorities[i].high / 7);
+        } else if(priorities[i].category === 'meTime'){
+          setMeTimeP(priorities[i].goal / 7);
+          setMeTimeLow(priorities[i].low / 7);
+          setMeTimeHigh(priorities[i].high / 7);
+        }
+      }
     }
     function getDates(checks){
       let addDates = [];
@@ -97,7 +145,7 @@ the renderCheckIns method is the controller for what is shown on the page
           {renderCoach()}
           {renderCheckInButton()}
           <HomeContentPortal />
-          <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History <Button onClick={() => setShowFilters(!showFilter)}>Filter</Button></h2>
+          <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Balance History <Button onClick={() => setShowFilters(!showFilter)}>Filter</Button> <Button onClick={() => setShowPriorities(!showPriorities)}>Compare To Goals</Button></h2>
           {showFilters()}
           <ListGroup>{!isLoading && renderCheckInList(checkIns)}</ListGroup>
           <>{!isLoading && renderChart()}</>
@@ -138,6 +186,7 @@ the renderCheckInList method is the MAIN RENDERER for the checkIn list
     checkIns.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1);
     return (
       <>
+          {(showPriorities) ? <p>Showing goals based on your last 7 days. <strong style={{color:'#610000'}}>Over Limit </strong> <strong style={{color:'#83f787'}}>Reached Goal </strong><strong style={{color:'#ffea63'}}>Nearing Goal </strong><strong style={{color:'#f5bb89'}}>Starting Up </strong></p> : <></>}
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -154,11 +203,11 @@ the renderCheckInList method is the MAIN RENDERER for the checkIn list
               {checkIns.map(({ checkInId, mindBool, bodyBool, socialBool, mindfulBool, meTimeBool, pushedSelfBool, dateCreated}) => (
                   <tr key={checkInId}>
                     <td><a href={`/checkin/${checkInId}`}>{formatDate(dateCreated)}</a></td>
-                    <td style={{backgroundColor: (mindAvg > 0.5) ? '#D1F2EB' : '#FAE5D3' }}>{mindBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (bodyAvg > 0.3) ? '#D1F2EB' : '#FAE5D3' }}>{bodyBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (socialAvg > 0.3) ? '#D1F2EB' : '#FAE5D3' }}>{socialBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (mindfulAvg > 0.5) ? '#D1F2EB' : '#FAE5D3' }}>{mindfulBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (meTimeAvg > 0.5) ? '#D1F2EB' : '#FAE5D3' }}>{meTimeBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(mindAvg, mindLow, mindP, mindHigh)) : null }}>{mindBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(bodyAvg, bodyLow, bodyP, bodyHigh)) : null}}>{bodyBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(socialAvg, socialLow, socialP, socialHigh)) : null}}>{socialBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(mindfulAvg, mindfulLow, mindfulP, mindfulHigh)) : null}}>{mindfulBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(meTimeAvg, meTimeLow, meTimeP, meTimeHigh)) : null}}>{meTimeBool ? CheckMark() : XMark()}</td>
                     <td>{pushedSelfBool ? TrophySymbol() : "-"}</td>
                   </tr>
               ))}
@@ -266,6 +315,21 @@ the renderAlert method is used to render an alert specifying how many days the u
   }
 
 /********************************
+the getPriorityColor method gets the color for the table
+********************************/ 
+  function getPriorityColor(avg, low, goal, high){
+    if(avg > high){
+      return '#610000';
+    } else if(avg >= goal){
+      return '#83f787';
+    } else if(avg >= low ){
+      return '#ffea63';
+    } else {
+      return '#f5bb89';
+    }
+  }
+
+/********************************
 the renderChart method is used to render a google pie chart based on the averages for each category. It also calls renderAlert()
 ********************************/  
   function renderChart() {
@@ -286,7 +350,7 @@ the renderChart method is used to render a google pie chart based on the average
           ['Me Time', meTimeAvg],
         ]}
         options={{
-          title: 'My Balance Profile',
+          title: 'My Balance Profile (showing for last 7 check-ins)',
         }}
         rootProps={{ 'data-testid': '1' }}
       />

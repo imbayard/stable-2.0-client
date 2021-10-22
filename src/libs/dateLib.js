@@ -34,29 +34,19 @@ Here is an example output object:
 ********************************/
 export function setFilterBy(range){
     const today = new Date();
-    let month = today.getMonth() + 1;
-    let date = today.getDate();
-    let year = today.getFullYear();
-    const end = {
-      'month': month,
-      'date': date,
-      'year': year
-    };
+    const end = today.getTime();
+    let start = 0;
     if(range === 'month'){
-      month = month - 1;
+      start = end - 2419200000;
     } else if (range === 'week'){
-      date = date - 7;
+      start = end - 604800000;
     } else if (range === 'year'){
-      year = year - 1;
+      start = end - 31449600000;
     } else if (range === 'alltime'){
-      year = 0;
+      start = 0;
     }
     return {
-        'start': {
-          'month': month,
-          'date': date,
-          'year': year
-        },
+        'start': start,
         'end': end
     }
 }
@@ -68,81 +58,10 @@ takes in the checkIn to filter and the filter object
 returns true if the checkIn falls in the inclusive range of the filter object, false otherwise
 ********************************/
 export function filterCheckIns(checkIn, filter){
-    const checkInDate = new Date(checkIn.dateCreated);
-    const ciDateObject = {
-      'month': checkInDate.getMonth() + 1,
-      'date': checkInDate.getDate(),
-      'year': checkInDate.getFullYear()
-    }
-
-    if(ciDateObject.year < filter.start.year || ciDateObject.year > filter.end.year){
-      return false;
-    }
-    if(ciDateObject.year > filter.start.year && ciDateObject.year < filter.end.year){
+    const checkInDate = checkIn.dateCreated;
+    if (checkInDate >= filter.start && checkInDate <= filter.end){
       return true;
-    }
-    if(ciDateObject.year === filter.start.year && ciDateObject.year < filter.end.year){
-      if(ciDateObject.month < filter.start.month){
-        return false;
-      }
-      if(ciDateObject.month > filter.start.month){
-        return true;
-      }
-      if(ciDateObject.month === filter.start.month){
-        if(ciDateObject.date < filter.start.date){
-          return false;
-        }
-        if(ciDateObject.date >= filter.start.date){
-          return true;
-        }
-      }
-    }
-    if(ciDateObject.year > filter.start.year && ciDateObject.year === filter.end.year){
-      if(ciDateObject.month > filter.end.month){
-        return false;
-      }
-      if(ciDateObject.month < filter.end.month){
-        return true;
-      }
-      if(ciDateObject.month === filter.end.month){
-        if(ciDateObject.date > filter.end.date){
-          return false;
-        }
-        if(ciDateObject.date <= filter.end.date){
-          return true;
-        }
-      }
-    }
-    if(ciDateObject.year === filter.start.year && ciDateObject.year === filter.end.year){
-      if(ciDateObject.month < filter.start.month || ciDateObject.month > filter.end.month){
-        return false;
-      }
-      if(ciDateObject.month > filter.start.month && ciDateObject.month < filter.end.month){
-        return true;
-      }
-      if(ciDateObject.month === filter.start.month && ciDateObject.month < filter.end.month){
-        if(ciDateObject.date < filter.start.date){
-          return false;
-        }
-        if(ciDateObject.date >= filter.start.date){
-          return true;
-        }
-      }
-      if(ciDateObject.month > filter.start.month && ciDateObject.month === filter.end.month){
-        if(ciDateObject.date > filter.end.date){
-          return false;
-        }
-        if(ciDateObject.date <= filter.end.date){
-          return true;
-        }
-      }
-      if(ciDateObject.month === filter.start.month && ciDateObject.month === filter.end.month){
-        if(ciDateObject.date < filter.start.date || ciDateObject.date > filter.end.date){
-          return false;
-        }
-        if(ciDateObject.date >= filter.start.date && ciDateObject.date <= filter.end.date){
-          return true;
-        }
-      }
+    } else {
+      return false;
     }
   }

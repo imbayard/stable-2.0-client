@@ -5,6 +5,8 @@ import { useAppContext } from "../libs/contextLib";
 import LoaderButton from "../components/LoaderButton";
 import Button from "react-bootstrap/Button";
 
+import './Priorities.css';
+
 export default function Priorities() {
     const [priorities_list, setPList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -322,16 +324,32 @@ export default function Priorities() {
 
     function renderLander(){
         if(priorities_list.length > 0){
+            let priorities = priorities_list.sort((a,b) => b.priority - a.priority)
             return(
                 <div>
-                    <Button onClick={() => setShowPrioritiesForm(!showPrioritiesForm)}>Set Priorities</Button>
+                    <Button variant='secondary' onClick={() => setShowPrioritiesForm(!showPrioritiesForm)}>Set Priorities</Button>
                     {renderPrioritiesForm()}
-                    {priorities_list.map((category) => {
+                    {priorities.map((category) => {
                         return(
-                            <span key={category.category}>
-                                <h4>{category.category}</h4>
-                                <p><strong>Priority: </strong>{category.priority}</p>
-                                <p><strong>Days / Week: </strong>At least: {category.low}, Goal: {category.goal}, At most: {category.high}</p>
+                            <span key={category.category} className='priority'>
+                                <span className='priority-header'>
+                                    <h4 className='priority-category'><strong>{category.category}</strong></h4>
+                                    <p className='priority-num'>{category.priority}</p> 
+                                </span>
+                                <span className='priority-goal-row'>
+                                    <span className='goal'>
+                                        <p>Low Goal</p>
+                                        <p className='goal-num'>{category.low}</p>
+                                    </span>
+                                    <span className='target-goal'>
+                                        <p>Target</p>
+                                        <p className='goal-num'>{category.goal}</p>
+                                    </span>
+                                    <span className='goal'>
+                                        <p>Limit</p>
+                                        <p className='goal-num'>{category.high}</p>
+                                    </span>
+                                </span>
                             </span>
                         )
                     })}
@@ -342,7 +360,7 @@ export default function Priorities() {
                 <div>
                     <h3>No Priorities Set</h3>
                     <h6>Set them using the button below to activate the Coach</h6>
-                    <Button onClick={() => setShowPrioritiesForm(!showPrioritiesForm)}>Set Priorities</Button>
+                    <Button variant='secondary' onClick={() => setShowPrioritiesForm(!showPrioritiesForm)}>Set Priorities</Button>
                     {renderPrioritiesForm()}
                 </div>
             )
