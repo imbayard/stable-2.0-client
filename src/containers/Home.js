@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
-import Table from 'react-bootstrap/Table';
 import { useHistory } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { CheckMark, XMark, TrophySymbol } from "../components/Icons";
@@ -12,7 +11,7 @@ import HomeCheckInForm from "../components/HomeCheckInForm";
 import HomeContentPortal from "../components/HomeContentPortal";
 
 import {loadCheckIns, getPriorities} from "../libs/apiLib";
-import {formatDate, setFilterBy, filterCheckIns} from "../libs/dateLib";
+import {formatDate, setFilterBy, filterCheckIns, weekDay} from "../libs/dateLib";
 
 import "./Home.css";
 
@@ -187,7 +186,7 @@ the renderCheckInList method is the MAIN RENDERER for the checkIn list
     return (
       <>
           {(showPriorities) ? <p>Showing goals based on your last 7 days. <strong style={{color:'#610000'}}>Over Limit </strong> <strong style={{color:'#83f787'}}>Reached Goal </strong><strong style={{color:'#ffea63'}}>Nearing Goal </strong><strong style={{color:'#f5bb89'}}>Starting Up </strong></p> : <></>}
-          <Table striped bordered hover>
+          <table>
             <thead>
               <tr>
                 <th>Date</th>
@@ -202,7 +201,7 @@ the renderCheckInList method is the MAIN RENDERER for the checkIn list
             <tbody>
               {checkIns.map(({ checkInId, mindBool, bodyBool, socialBool, mindfulBool, meTimeBool, pushedSelfBool, dateCreated}) => (
                   <tr key={checkInId}>
-                    <td><a href={`/checkin/${checkInId}`}>{formatDate(dateCreated)}</a></td>
+                    <td style={{fontSize: 'large'}}><a href={`/checkin/${checkInId}`}>{(dr_filter === 'week') ? weekDay(dateCreated) : formatDate(dateCreated)}</a></td>
                     <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(mindAvg, mindLow, mindP, mindHigh)) : null }}>{mindBool ? CheckMark() : XMark()}</td>
                     <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(bodyAvg, bodyLow, bodyP, bodyHigh)) : null}}>{bodyBool ? CheckMark() : XMark()}</td>
                     <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(socialAvg, socialLow, socialP, socialHigh)) : null}}>{socialBool ? CheckMark() : XMark()}</td>
@@ -212,7 +211,7 @@ the renderCheckInList method is the MAIN RENDERER for the checkIn list
                   </tr>
               ))}
             </tbody>
-          </Table>
+          </table>
           <HomeCheckInForm 
             dateList={dates}
           />
@@ -318,6 +317,7 @@ the renderAlert method is used to render an alert specifying how many days the u
 the getPriorityColor method gets the color for the table
 ********************************/ 
   function getPriorityColor(avg, low, goal, high){
+    console.log(mindAvg, mindP);
     if(avg > high){
       return '#610000';
     } else if(avg >= goal){

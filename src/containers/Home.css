@@ -10,6 +10,25 @@
     padding: 5px;
 }
 
+td, th {
+    text-align: center;
+    padding-bottom: 3px;
+}
+
+th {
+    background-color: #8aafb6;
+    color: white;
+}
+
+table {
+    border: 1px solid black;
+    font-size: x-large;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
 .custom-alert {
     margin: auto;
     background-color: #8aafb6;

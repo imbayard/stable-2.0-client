@@ -7,6 +7,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Button from "react-bootstrap/Button";
 
 import {submitCheckIn} from "../libs/apiLib";
+import {formatDate} from "../libs/dateLib";
 
 import "./HomeCheckInForm.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,22 +27,14 @@ export default function HomeCheckInForm({
     const [meTime, setMeTime] = useState(false);
     const [trophy, setTrophy] = useState(false);
 
-    function formatDate(date){
-        const newDate = new Date(date).toLocaleString("en-US", { timeZone: 'EST'});
-        const dateArr = newDate.split('/');
-        const year = dateArr[2].substr(0,4);
-        const month = dateArr[0];
-        const day = dateArr[1];
-        return (month + "/" + day + "/" + year);
-    }
-
     function checkDates(dateCreated){
         const formattedDate = formatDate(dateCreated)
         for(let i = 0; i < dateList.length; i++){
             if(dateList[i] === formattedDate){
+                const msg = "There's already a check-in for this day " + formattedDate;
                 return {
                     isValid: false,
-                    message: "There's already a check-in for this day."
+                    message: msg
                 }
             }
         }

@@ -81,8 +81,6 @@ export default function SingleCheckIn() {
                         <td>{checkIn.socialBool ? CheckMark() : XMark()}</td>
                         <td>{checkIn.mindfulBool ? CheckMark() : XMark()}</td>
                         <td>{checkIn.meTimeBool ? CheckMark() : XMark()}</td>
-                        {/* <td>{checkIn.lessOneBool ? CheckMark() : XMark()}</td>
-                        <td>{checkIn.lessTwoBool ? CheckMark() : XMark()}</td> */}
                         <td>{checkIn.pushedSelfBool ? TrophySymbol() : "-"}</td>
                       </tr>
                 </tbody>

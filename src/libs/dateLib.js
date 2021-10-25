@@ -12,6 +12,12 @@ export function formatDate(date){
     return (month + "/" + day + "/" + year);
 }
 
+export function weekDay(date){
+  const newDate = new Date(date);
+  const day = new Intl.DateTimeFormat('en-US', {weekday: 'long'}).format(newDate);
+  return day;
+}
+
 /********************************
 the SET FILTER BY method
 
