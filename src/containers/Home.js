@@ -32,25 +32,30 @@ export default function Home() {
   const [dr_filter, setDrFilter] = useState('week');
 
   const [showPriorities, setShowPriorities] = useState(false);
+  const [mindPriority, setMindPriority] = useState("");
   const [mindLow, setMindLow] = useState("");
   const [mindHigh, setMindHigh] = useState("");
-  const [mindP, setMindP] = useState("");
+  const [mindGoal, setMindGoal] = useState("");
 
+  const [bodyPriority, setBodyPriority] = useState("");
   const [bodyLow, setBodyLow] = useState("");
   const [bodyHigh, setBodyHigh] = useState("");
-  const [bodyP, setBodyP] = useState("");
+  const [bodyGoal, setBodyGoal] = useState("");
 
+  const [socialPriority, setSocialPriority] = useState("");
   const [socialLow, setSocialLow] = useState("");
   const [socialHigh, setSocialHigh] = useState("");
-  const [socialP, setSocialP] = useState("");
+  const [socialGoal, setSocialGoal] = useState("");
 
+  const [mindfulPriority, setMindfulPriority] = useState("");
   const [mindfulLow, setMindfulLow] = useState("");
   const [mindfulHigh, setMindfulHigh] = useState("");
-  const [mindfulP, setMindfulP] = useState("");
+  const [mindfulGoal, setMindfulGoal] = useState("");
 
+  const [meTimePriority, setMeTimePriority] = useState("");
   const [meTimeLow, setMeTimeLow] = useState("");
   const [meTimeHigh, setMeTimeHigh] = useState("");
-  const [meTimeP, setMeTimeP] = useState("");
+  const [meTimeGoal, setMeTimeGoal] = useState("");
   
 /********************************
 the useEffect method handles all loading requirements
@@ -68,6 +73,8 @@ the useEffect method handles all loading requirements
         // Wait for the checkIns to load, then populate the state
         const result = await loadCheckIns();
         const priorities = await getPriorities();
+        // pass priorities.msg_queue to setMsgQueue
+        // pass priorities.priority_list to the function below
         collectPriorities(priorities);
         await getDates(result.checkIns);
         setCheckIns(result.checkIns);
@@ -86,25 +93,30 @@ the useEffect method handles all loading requirements
     function collectPriorities(priorities){
       for(let i = 0; i < priorities.length; i++){
         if(priorities[i].category === 'mind'){
-          setMindP(priorities[i].goal / 7);
+          setMindGoal(priorities[i].goal / 7);
           setMindLow(priorities[i].low / 7);
           setMindHigh(priorities[i].high / 7);
+          setMindPriority(priorities[i].priority);
         } else if(priorities[i].category === 'body'){
-          setBodyP(priorities[i].goal / 7);
+          setBodyGoal(priorities[i].goal / 7);
           setBodyLow(priorities[i].low / 7);
           setBodyHigh(priorities[i].high / 7);
+          setBodyPriority(priorities[i].priority);
         } else if(priorities[i].category === 'social'){
-          setSocialP(priorities[i].goal / 7);
+          setSocialGoal(priorities[i].goal / 7);
           setSocialLow(priorities[i].low / 7);
           setSocialHigh(priorities[i].high / 7);
+          setSocialPriority(priorities[i].priority);
         } else if(priorities[i].category === 'mindful'){
-          setMindfulP(priorities[i].goal / 7);
+          setMindfulGoal(priorities[i].goal / 7);
           setMindfulLow(priorities[i].low / 7);
           setMindfulHigh(priorities[i].high / 7);
+          setMindfulPriority(priorities[i].priority);
         } else if(priorities[i].category === 'meTime'){
-          setMeTimeP(priorities[i].goal / 7);
+          setMeTimeGoal(priorities[i].goal / 7);
           setMeTimeLow(priorities[i].low / 7);
           setMeTimeHigh(priorities[i].high / 7);
+          setMeTimePriority(priorities[i].priority);
         }
       }
     }
@@ -202,11 +214,11 @@ the renderCheckInList method is the MAIN RENDERER for the checkIn list
               {checkIns.map(({ checkInId, mindBool, bodyBool, socialBool, mindfulBool, meTimeBool, pushedSelfBool, dateCreated}) => (
                   <tr key={checkInId}>
                     <td style={{fontSize: 'large'}}><a href={`/checkin/${checkInId}`}>{(dr_filter === 'week') ? weekDay(dateCreated) : formatDate(dateCreated)}</a></td>
-                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(mindAvg, mindLow, mindP, mindHigh)) : null }}>{mindBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(bodyAvg, bodyLow, bodyP, bodyHigh)) : null}}>{bodyBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(socialAvg, socialLow, socialP, socialHigh)) : null}}>{socialBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(mindfulAvg, mindfulLow, mindfulP, mindfulHigh)) : null}}>{mindfulBool ? CheckMark() : XMark()}</td>
-                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(meTimeAvg, meTimeLow, meTimeP, meTimeHigh)) : null}}>{meTimeBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(mindAvg, mindLow, mindGoal, mindHigh)) : null }}>{mindBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(bodyAvg, bodyLow, bodyGoal, bodyHigh)) : null}}>{bodyBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(socialAvg, socialLow, socialGoal, socialHigh)) : null}}>{socialBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(mindfulAvg, mindfulLow, mindfulGoal, mindfulHigh)) : null}}>{mindfulBool ? CheckMark() : XMark()}</td>
+                    <td style={{backgroundColor: (showPriorities) ? (getPriorityColor(meTimeAvg, meTimeLow, meTimeGoal, meTimeHigh)) : null}}>{meTimeBool ? CheckMark() : XMark()}</td>
                     <td>{pushedSelfBool ? TrophySymbol() : "-"}</td>
                   </tr>
               ))}
@@ -295,10 +307,52 @@ the newCheckIn method is used to navigate the user to the page to create a new c
 the renderCoach method is used to render the coach object
 ********************************/
   function renderCoach() {
+    const mind = {
+      'category': 'mind',
+      'low': mindLow,
+      'goal': mindGoal,
+      'high': mindHigh,
+      'avg': mindAvg,
+      'priority': mindPriority,
+    };
+    const body = {
+      'category': 'body',
+      'low': bodyLow,
+      'goal': bodyGoal,
+      'high': bodyHigh,
+      'avg': bodyAvg,
+      'priority': bodyPriority
+    };
+    const social = {
+      'category': 'social',
+      'low': socialLow,
+      'goal': socialGoal,
+      'high': socialHigh,
+      'avg': socialAvg,
+      'priority': socialPriority
+    };
+    const mindful = {
+      'category': 'mindful',
+      'low': mindfulLow,
+      'goal': mindfulGoal,
+      'high': mindfulHigh,
+      'avg': mindfulAvg,
+      'priority': mindfulPriority
+    };
+    const meTime = {
+      'category': 'meTime',
+      'low': meTimeLow,
+      'goal': meTimeGoal,
+      'high': meTimeHigh,
+      'avg': meTimeAvg,
+      'priority': meTimePriority
+    };
+    let priorities = [meTime, mind, body, mindful, social];
     return(
       <Coach 
         flags={flags}
         length={checkIns.length}
+        priorities={priorities}
       />
     )
   }
@@ -317,7 +371,6 @@ the renderAlert method is used to render an alert specifying how many days the u
 the getPriorityColor method gets the color for the table
 ********************************/ 
   function getPriorityColor(avg, low, goal, high){
-    console.log(mindAvg, mindP);
     if(avg > high){
       return '#610000';
     } else if(avg >= goal){

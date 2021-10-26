@@ -51,6 +51,7 @@ export default function Priorities() {
             try {
                 // Wait for the content to load, then populate the state
                 const result = await getPriorities();
+                // setPList(result.priority_list)
                 setPList(result);
             } catch(e) {
                 onError(e);
