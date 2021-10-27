@@ -1,6 +1,7 @@
 import {React, useState} from "react";
 import { CoachSymbol } from "./Icons";
 import Button from 'react-bootstrap/Button';
+import MorningMessage from './MorningMessage';
 import "./Coach.css";
 export default function Coach({
     flags,
@@ -71,6 +72,9 @@ export default function Coach({
             <div>
                 <p className='coach-words'>{tq[queueNum]}</p>
                 <Button variant='success' onClick={() => handleNextMessage(length)}>Next Message</Button>
+                <MorningMessage 
+                    priorities={priorities}
+                />
             </div>
         )
         
